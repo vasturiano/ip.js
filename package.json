@@ -1,0 +1,41 @@
+{
+  "name": "ip.js",
+  "version": "0.1.0",
+  "description": "A JS library for manipulating IP addresses, prefixes and ranges. Supports both IPv4 and IPv6.",
+  "keywords": [
+    "ip",
+    "prefix",
+    "range",
+    "ipv4",
+    "ipv6",
+    "internet",
+    "protocol",
+    "network",
+    "bgp",
+    "tcp/ip"
+  ],
+  "author": {
+    "name": "Vasco Asturiano",
+    "url": "http://bl.ocks.org/vasturiano"
+  },
+  "license": "GPL-3.0",
+  "main": "src/index.js",
+  "homepage": "https://github.com/vasturiano/ip.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vasturiano/ip.js.git"
+  },
+  "scripts": {
+    "build": "rm -rf dist && mkdir dist && browserify src/index.js -o dist/ip.js",
+    "watch": "watchify src/index.js -o dist/ip.js",
+    "minify": "uglifyjs dist/ip.js -o dist/ip.min.js -c -m --preamble \"$(preamble)\"",
+    "prepublish": "npm run build && npm run minify"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "browserify": "^13",
+    "package-preamble": "^0.0.2",
+    "uglify-js": "^2.7",
+    "watchify": "^3"
+  }
+}
