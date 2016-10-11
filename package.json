@@ -26,7 +26,7 @@
     "url": "https://github.com/vasturiano/ip.js.git"
   },
   "scripts": {
-    "build": "rm -rf dist && mkdir dist && browserify src/index.js -o dist/ip.js",
+    "build": "rm -rf dist && mkdir dist && browserify src/index.js -o dist/ip.js -s Ip",
     "watch": "watchify src/index.js -o dist/ip.js",
     "minify": "uglifyjs dist/ip.js -o dist/ip.min.js -c -m --preamble \"$(preamble)\"",
     "prepublish": "npm run build && npm run minify"
