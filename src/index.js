@@ -1,5 +1,7 @@
+var collection = require('./collection');
+
 module.exports = {
-    Addr: require('./Addr'),
-    Prefix: require('./Prefix'),
-    Range: require('./Range')
+    Addr: require('./single'),
+    Prefix: collection.Prefix,
+    Range: collection.Range
 };
