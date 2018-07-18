@@ -18,8 +18,9 @@
     "name": "Vasco Asturiano",
     "url": "http://bl.ocks.org/vasturiano"
   },
-  "license": "GPL-3.0",
+  "license": "MIT",
   "main": "src/index.js",
+  "unpkg": "dist/ip.min.js",
   "homepage": "https://github.com/vasturiano/ip.js",
   "repository": {
     "type": "git",
@@ -28,14 +29,13 @@
   "scripts": {
     "build": "rm -rf dist && mkdir dist && browserify src/index.js -o dist/ip.js -s Ip",
     "watch": "watchify src/index.js -o dist/ip.js",
-    "minify": "uglifyjs dist/ip.js -o dist/ip.min.js -c -m --preamble \"$(preamble)\"",
+    "minify": "uglifyjs dist/ip.js -o dist/ip.min.js -c -m",
     "prepublish": "npm run build && npm run minify"
   },
   "dependencies": {},
   "devDependencies": {
-    "browserify": "^13",
-    "package-preamble": "^0.0.2",
-    "uglify-js": "^2.7",
+    "browserify": "^16",
+    "uglify-js": "^3.4",
     "watchify": "^3"
   }
 }
