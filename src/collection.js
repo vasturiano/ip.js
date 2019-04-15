@@ -1,4 +1,4 @@
-var Addr = require('./single');
+import Addr from './single';
 
 // *******************//
 
@@ -231,5 +231,4 @@ Range.prototype.getNeighborPrefixes = function() {
 
 // ************* //
 
-module.exports.Prefix = Prefix;
-module.exports.Range = Range;
+export { Prefix, Range };

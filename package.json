@@ -2,6 +2,9 @@
   "name": "ip.js",
   "version": "0.4.0",
   "description": "A JS library for manipulating IP addresses, prefixes and ranges. Supports both IPv4 and IPv6.",
+  "unpkg": "dist/ip.min.js",
+  "main": "dist/ip.common.js",
+  "module": "dist/ip.module.js",
   "keywords": [
     "ip",
     "prefix",
@@ -19,23 +22,38 @@
     "url": "http://bl.ocks.org/vasturiano"
   },
   "license": "MIT",
-  "main": "src/index.js",
-  "unpkg": "dist/ip.min.js",
   "homepage": "https://github.com/vasturiano/ip.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/vasturiano/ip.js.git"
   },
+  "bugs": {
+    "url": "https://github.com/vasturiano/ip.js/issues"
+  },
+  "files": [
+    "src/**/*",
+    "dist/**/*",
+    "example/**/*"
+  ],
   "scripts": {
-    "build": "rm -rf dist && mkdir dist && browserify src/index.js -o dist/ip.js -s Ip",
-    "watch": "watchify src/index.js -o dist/ip.js",
-    "minify": "uglifyjs dist/ip.js -o dist/ip.min.js -c -m",
-    "prepublish": "npm run build && npm run minify"
+    "build": "rimraf dist && rollup -c",
+    "dev": "rollup -c -w",
+    "minify": "terser dist/ip.js -o dist/ip.min.js -c -m --comments '/Version/'",
+    "build-module": "rollup -c rollup.config.module.js",
+    "prepare": "npm run build && npm run minify && npm run build-module"
   },
   "dependencies": {},
   "devDependencies": {
-    "browserify": "^16",
-    "uglify-js": "^3.4",
-    "watchify": "^3"
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.7.4",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.2.2",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "rollup-watch": "^4.3.1",
+    "terser": "^3.17.0"
   }
 }

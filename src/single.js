@@ -105,4 +105,4 @@ Addr.prototype.compare2Ip = function(that) {
     }
 };
 
-module.exports = Addr;
+export default Addr;
