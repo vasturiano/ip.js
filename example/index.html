@@ -1,0 +1,18 @@
+<!--<script src="//unpkg.com/ip.js"></script>-->
+<script src="../dist/ip.js"></script>
+
+<script>
+  let ip, prefix, range;
+
+  ip = new Ip.Addr('10.0.0.0');
+  console.log(ip.toString(), ip);
+
+  prefix = new Ip.Prefix('10.0.0.0/24');
+  console.log(prefix.toString(), prefix);
+
+  prefix = new Ip.Prefix('2002:DEAD::/48');
+  console.log(prefix.toString(), prefix);
+
+  range = new Ip.Range('10.0.0.0', '10.0.255.255');
+  console.log(range.toString(), range);
+</script>
