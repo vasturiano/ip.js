@@ -23,6 +23,8 @@ class Prefix {
     return op.exp(op.num(2), op.num((this.isIPv4() ? 32 : 128) - this.cidr));
   }
 
+  getCidr = () => this.cidr;
+
   // Returns object of first IP in the prefix
   firstIp = () => this.ip;
 
