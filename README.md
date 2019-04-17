@@ -36,7 +36,7 @@ myV6Prefix.isIpV4(); // false
 myV6Prefix.firstIp(); // 2002:dead::
 myV6Prefix.lastIp(); // 2002:dead::ffff:ffff:ffff:ffff:ffff
 
-myPrefix.countIps(); // 43
+myRange.countIps(); // 43
 myRange.toEncompassingPrefix(); // 10.0.0.0/26
 myRange.toPrefixes(); // [10.0.0.0/27, 10.0.0.32/29, 10.0.0.40/31, 10.0.0.42/32]
 ```
@@ -52,7 +52,7 @@ Class to manipulate single IP addresses.
 <b>new Addr</b>(<i>ip</i>, [<i>isV4</i>])
 
 Creates a new object representing an IP address, based on the input `ip` argument. `ip` can be either a <i>string</i> (f.e. `10.0.0.0` or `2002:DEAD::`), a <i>number</i> (`167772160`), a [BigInt](https://github.com/GoogleChromeLabs/jsbi), or another instance of `Addr`.
-The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or <i>IPv6</i> (`false`). If it is `undefined`, the address family is automatically derived from the input `ip` by either looking for specific family syntax in the <i>string</i>, or checking for numbers larger than 32 bit.
+The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or <i>IPv6</i> (`false`)). If it is `undefined`, the address family is automatically derived from the input `ip` by either looking for specific family syntax in the <i>string</i>, or checking for numbers larger than 32 bit.
 
 #### Methods
 
@@ -64,23 +64,25 @@ The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or
 | **version**() | - | *number*: `4` or `6` | Get the IP address family. |
 | **isIPv4**() | - | *boolean* | Whether the address family is *IPv4*. |
 | **addIp**(*ip*) | ip: *Addr* | *Addr* | Given another IP address (*Addr* object), returns a new *Addr* object representing the numeric sum of the two IP addresses. If the two IPs are of different address families, this operation will fail due to the incompatibility between addresses. |
-| **subIp**(*ip*) | ip: *Addr* | *Addr* | Given another IP address (*Addr* object), returns a new *Addr* object representing the numeric subtraction of the input IP from this one. Make sure the input IP is not larger then the existing one, leading to negative values. If the two IPs are of different address families, this operation will fail due to the incompatibility between addresses. |
+| **subIp**(*ip*) | ip: *Addr* | *Addr* | Given another IP address (*Addr* object), returns a new *Addr* object representing the numeric subtraction of the input IP from this one. Make sure the input IP is no higher then the existing one, which would lead to negative values. If the two IPs are of different address families, this operation will fail due to the incompatibility between addresses. |
 | **compare2ip**(*ip*) | ip: *Addr* | *number*: `-1`, `0` or `1` | Performs a numeric comparison with another IP address (*Addr* object), and returns `-1` if the current IP is lower than the input, `0` if they are equal and `1` if the current IP is higher than the input. If the two IPs are of different address families, this method returns `null`. |
 
 ### Prefix
 
-Class to manipulate IP prefixes, in format `<IP address>/<cidr>`.
+Class to manipulate IP prefixes, with the format `<IP address>/<cidr>`.
 
 #### Instantiation
 
 <b>new Prefix</b>(<i>prefix</i>)
+
 or
+
 <b>new Prefix</b>(<i>ip</i>, <i>cidr</i>, [<i>isV4</i>])
 
-Creates a new object representing an IP prefix, based on the input `prefix` or (`ip`, `cidr`) arguments. 
+Creates a new object representing an IP prefix, based on the input `prefix` or (`ip`, `cidr`) arguments.
 `prefix` should be a *string* representation (f.e. `10.0.0.0/24` or `2002:DEAD::/48`). 
 The class can also be instantiated by passing a pair of `ip`, `cidr` arguments. `ip` supports any format understood by the *Addr* class, and `cidr` should be a number (*IPv4*: `0`-`32`, *IPv6*: `0`-`128`).
-The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or <i>IPv6</i> (`false`). If it is `undefined`, the address family is automatically derived from the input prefix.
+The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or <i>IPv6</i> (`false`)). If it is `undefined`, the address family is automatically derived from the input prefix.
 
 #### Methods
 
@@ -98,7 +100,7 @@ The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or
 
 ### Range
 
-Class to manipulate IP ranges, in format `<first IP> - <last IP>`.
+Class to manipulate IP ranges, with the format `<first IP> - <last IP>`.
 
 #### Instantiation
 
@@ -106,7 +108,7 @@ Class to manipulate IP ranges, in format `<first IP> - <last IP>`.
 
 Creates a new object representing an IP address range, based on the input `firstIp` and `lastIp` arguments. 
 Both IPs are required and support any format understood by the *Addr* class.
-The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or <i>IPv6</i> (`false`). If it is `undefined`, the address family is automatically derived from the input IP addresses. If the two IP addresses are of different address families an exception will be thrown.
+The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or <i>IPv6</i> (`false`)). If it is `undefined`, the address family is automatically derived from the input IP addresses. If the two IP addresses are of different address families an exception is thrown.
 
 #### Methods
 
