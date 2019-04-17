@@ -1,18 +1,155 @@
-<!--<script src="//unpkg.com/ip.js"></script>-->
-<script src="../dist/ip.js"></script>
+<script src="//unpkg.com/ip.js"></script>
+<!--<script src="../dist/ip.js"></script>-->
 
 <script>
   let ip, prefix, range;
+  // 10.0.0.10
+  console.log(new Ip.Addr('10.0.0.10').toString(), new Ip.Addr('10.0.0.10'));
+  // 2002:dead::4c:4
+  console.log(new Ip.Addr('2002:DEAD::4C:4').toString(), new Ip.Addr('2002:DEAD::4C:4'));
+
+  // 10.0.0.0/24
+  console.log(new Ip.Prefix('10.0.0.0/24').toString(), new Ip.Prefix('10.0.0.0/24'));
+  // 2002:dead::/48
+  console.log(new Ip.Prefix('2002:DEAD::/48').toString(), new Ip.Prefix('2002:DEAD::/48'));
+
+  // 10.0.0.0 - 10.0.255.255
+  console.log(new Ip.Range('10.0.0.0', '10.0.255.255').toString(), new Ip.Range('10.0.0.0', '10.0.255.255'));
+
+
+  /* Addr */
+  // 10.0.0.0
+  console.log(new Ip.Addr('10.0.0.0').toString());
+  // 10.0.0.10
+  console.log(new Ip.Addr('10.0.0.10').toString());
+
+  // 2002:dead::
+  console.log(new Ip.Addr('2002:DEAD::').toString());
+  // 2002:dead::4c
+  console.log(new Ip.Addr('2002:DEAD::4C').toString());
+  // 2002:dead::4c:4
+  console.log(new Ip.Addr('2002:DEAD::4C:4').toString());
 
   ip = new Ip.Addr('10.0.0.0');
-  console.log(ip.toString(), ip);
+  // 4
+  console.log(ip.version());
+  // true
+  console.log(ip.isIPv4());
+  // 167772160
+  console.log(ip.toNum());
+  // 00001010000000000000000000000000
+  console.log(ip.toBin());
+  // 30.0.0.0
+  console.log(ip.addIp(new Ip.Addr('20.0.0.0')).toString());
+  // 5.0.0.0
+  console.log(ip.subIp(new Ip.Addr('5.0.0.0')).toString());
+  // 0
+  console.log(ip.compare2ip(new Ip.Addr('10.0.0.0')));
+  // 1 1 1
+  console.log(ip.compare2ip(new Ip.Addr('9.255.255.255')), ip.compare2ip(new Ip.Addr('9.0.0.0')), ip.compare2ip(new Ip.Addr('0.0.0.0')));
+  // -1 -1 -1
+  console.log(ip.compare2ip(new Ip.Addr('10.0.0.1')), ip.compare2ip(new Ip.Addr('11.0.0.0')), ip.compare2ip(new Ip.Addr('255.255.255.255')));
 
+  ip = new Ip.Addr('2002:DEAD::1');
+  // 6
+  console.log(ip.version());
+  // false
+  console.log(ip.isIPv4());
+  // 42550196860238503226743406894518370305
+  console.log(ip.toNum().toString());
+  // 00100000000000101101111010101101000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001
+  console.log(ip.toBin());
+  // 3002:dead::1
+  console.log(ip.addIp(new Ip.Addr('1000::')).toString());
+  // 1002:dead::1
+  console.log(ip.subIp(new Ip.Addr('1000::')).toString());
+  // 0
+  console.log(ip.compare2ip(new Ip.Addr('2002:DEAD::1')));
+  // 1 1 1
+  console.log(ip.compare2ip(new Ip.Addr('2002:DEAD::')), ip.compare2ip(new Ip.Addr('2002::')), ip.compare2ip(new Ip.Addr('::')));
+  // -1 -1 -1
+  console.log(ip.compare2ip(new Ip.Addr('2002:DEAD::2')), ip.compare2ip(new Ip.Addr('2002:DEAE::')), ip.compare2ip(new Ip.Addr('FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF')));
+
+  /* Prefix */
   prefix = new Ip.Prefix('10.0.0.0/24');
-  console.log(prefix.toString(), prefix);
+  // true
+  console.log(prefix.isIPv4());
+  // 256
+  console.log(prefix.countIps());
+  // 10.0.0.0
+  console.log(prefix.firstIp().toString());
+  // 10.0.0.255
+  console.log(prefix.lastIp().toString());
+  // 10.0.0.0 - 10.0.0.255
+  console.log(prefix.toRange().toString());
+  // 10.0.0.0/24
+  console.log(new Ip.Prefix('10.0.0.42/24').correctBitBoundary().toString());
+  // ["10.0.0.0/26", "10.0.0.64/26", "10.0.0.128/26", "10.0.0.192/26"]
+  console.log(prefix.slice(26).map(p => p.toString()));
 
   prefix = new Ip.Prefix('2002:DEAD::/48');
-  console.log(prefix.toString(), prefix);
+  // false
+  console.log(prefix.isIPv4());
+  // 1208925819614629174706176
+  console.log(prefix.countIps().toString());
+  // 2002:dead::
+  console.log(prefix.firstIp().toString());
+  // 2002:dead::ffff:ffff:ffff:ffff:ffff
+  console.log(prefix.lastIp().toString());
+  // 2002:dead:: - 2002:dead::ffff:ffff:ffff:ffff:ffff
+  console.log(prefix.toRange().toString());
+  // 2002:dead::12:8/126
+  console.log(new Ip.Prefix('2002:DEAD::12:A/126').correctBitBoundary().toString());
+  // ["2002:dead::/50", "2002:dead::4000:0:0:0:0/50", "2002:dead::8000:0:0:0:0/50", "2002:dead::c000:0:0:0:0/50"]
+  console.log(prefix.slice(50).map(p => p.toString()));
 
-  range = new Ip.Range('10.0.0.0', '10.0.255.255');
-  console.log(range.toString(), range);
+  /* Range */
+  range = new Ip.Range('10.0.0.0', '10.5.255.255');
+  // true
+  console.log(range.isIPv4());
+  // 393216
+  console.log(range.countIps());
+  // 10.0.0.0
+  console.log(range.firstIp().toString());
+  // 10.5.255.255
+  console.log(range.lastIp().toString());
+  // 13.415...
+  console.log(range.cidrCount());
+  // ["10.0.0.0/14", "10.4.0.0/15"]
+  console.log(range.toPrefixes().map(p => p.toString()));
+  // 10.0.0.0/13
+  console.log(range.toEncompassingPrefix().toString());
+  // 0.3(3)
+  console.log(range.ipRelPosition(new Ip.Addr('10.2.0.0')));
+  // 0.33333587...
+  console.log(range.ipRelPosition(new Ip.Addr('10.2.0.0'), true));
+  // 10.2.0.0
+  console.log(range.ipAtPerc(100 / 3).toString());
+  // ["up: 10.0.0.0/15", "left: 9.255.0.0/16", "right: 10.1.0.0/16", "downleft: 10.0.0.0/17", "downright: 10.0.128.0/17"]
+  console.log(Object.entries(new Ip.Range('10.0.0.0', '10.0.255.255').getNeighborPrefixes()).map(([type,p]) => `${type}: ${p.toString()}`));
+
+  range = new Ip.Range('2002:DEAD::', '2002:DEAD::E');
+  // false
+  console.log(range.isIPv4());
+  // 15
+  console.log(range.countIps().toString());
+  // 2002:dead::
+  console.log(range.firstIp().toString());
+  // 2002:dead::e
+  console.log(range.lastIp().toString());
+  // 124.093...
+  console.log(range.cidrCount());
+  // ["2002:dead::/125", "2002:dead::8/126", "2002:dead::c/127", "2002:dead::e/128"]
+  console.log(range.toPrefixes().map(p => p.toString()));
+  // 2002:dead::/124
+  console.log(range.toEncompassingPrefix().toString());
+  // 0.53(3)
+  console.log(range.ipRelPosition(new Ip.Addr('2002:DEAD::8')));
+  // 0.6
+  console.log(range.ipRelPosition(new Ip.Addr('2002:DEAD::8'), true));
+  // 2002:dead::5
+  console.log(range.ipAtPerc(100 / 3).toString());
+  // ["up: 2002:dead::/123", "left: 2002:deac:ffff:ffff:ffff:ffff:ffff:fff0/124", "right: 2002:dead::10/124", "downleft: 2002:dead::/125", "downright: 2002:dead::8/125"]
+  console.log(Object.entries(new Ip.Range('2002:DEAD::', '2002:DEAD::F').getNeighborPrefixes()).map(([type,p]) => `${type}: ${p.toString()}`));
+
 </script>
