@@ -31,9 +31,13 @@ class Addr {
       const numFinalSegments = isV4 ? 0 : (ip.split('::')[1] || '').split(':').length;
       ip.split(isV4 ? '.' : ':').forEach(seg => {
         if (!seg.length) {
-          return exp = (numFinalSegments - 1) * 16;
+          return exp = (numFinalSegments - 1) * (isV4 ? 4 : 16);
         }
-        num = op.add(num, op.mult(op.num(parseInt(seg, isV4 ? 10 : 16)), op.num(Math.pow(2, exp))));
+        const segNum = parseInt(seg, isV4 ? 10 : 16);
+        if (isNaN(segNum)) {
+          throw new Error(`Unable to parse address portion "${seg}" from ${ip}`);
+        }
+        num = op.add(num, op.mult(op.num(segNum), op.num(Math.pow(2, exp))));
         exp -= isV4 ? 8 : 16;
       });
 
