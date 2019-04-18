@@ -110,11 +110,11 @@ class Range {
 
     let sweepIp = this.start;
 
-    while (sweepIp.compare2ip(endIp) <= 0) {
+    while (sweepIp.compare2Ip(endIp) <= 0) {
       let cidr = topCidr;
       let prefix = new Prefix(sweepIp, cidr, this.isIPv4());
 
-      while (prefix.correctBitBoundary().firstIp().compare2ip(sweepIp) !== 0 || prefix.lastIp().compare2ip(endIp) > 0) {
+      while (prefix.correctBitBoundary().firstIp().compare2Ip(sweepIp) !== 0 || prefix.lastIp().compare2Ip(endIp) > 0) {
         cidr++;
         prefix = new Prefix(sweepIp, cidr, this.isIPv4());
       }
@@ -122,7 +122,7 @@ class Range {
       prefixes.push(prefix);
       sweepIp = prefix.lastIp().addIp(oneIP);
 
-      if (sweepIp.compare2ip(zeroIP) === 0) // Counter flipped back to start
+      if (sweepIp.compare2Ip(zeroIP) === 0) // Counter flipped back to start
         break;
     }
 
@@ -136,7 +136,7 @@ class Range {
     let cidr = Math.floor(this.cidrCount());
     let prefix = (new Prefix(startIp, cidr, this.isIPv4())).correctBitBoundary();
 
-    while (prefix.lastIp().compare2ip(endIp) < 0) {
+    while (prefix.lastIp().compare2Ip(endIp) < 0) {
       cidr--;
       prefix = (new Prefix(startIp, cidr, this.isIPv4())).correctBitBoundary();
     }

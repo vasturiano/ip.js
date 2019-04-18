@@ -71,20 +71,20 @@ test('subIp', () => {
   expect(new Addr('2002:DEAD::1').subIp(new Addr('1000::')).toString()).toBe('1002:dead::1');
 });
 
-test('compare2ip', () => {
-  expect(new Addr('10.0.0.0').compare2ip(new Addr('10.0.0.0'))).toBe(0);
-  expect(new Addr('10.0.0.0').compare2ip(new Addr('9.255.255.255'))).toBe(1);
-  expect(new Addr('10.0.0.0').compare2ip(new Addr('9.0.0.0'))).toBe(1);
-  expect(new Addr('10.0.0.0').compare2ip(new Addr('0.0.0.0'))).toBe(1);
-  expect(new Addr('10.0.0.0').compare2ip(new Addr('10.0.0.1'))).toBe(-1);
-  expect(new Addr('10.0.0.0').compare2ip(new Addr('11.0.0.0'))).toBe(-1);
-  expect(new Addr('10.0.0.0').compare2ip(new Addr('255.255.255.255'))).toBe(-1);
+test('compare2Ip', () => {
+  expect(new Addr('10.0.0.0').compare2Ip(new Addr('10.0.0.0'))).toBe(0);
+  expect(new Addr('10.0.0.0').compare2Ip(new Addr('9.255.255.255'))).toBe(1);
+  expect(new Addr('10.0.0.0').compare2Ip(new Addr('9.0.0.0'))).toBe(1);
+  expect(new Addr('10.0.0.0').compare2Ip(new Addr('0.0.0.0'))).toBe(1);
+  expect(new Addr('10.0.0.0').compare2Ip(new Addr('10.0.0.1'))).toBe(-1);
+  expect(new Addr('10.0.0.0').compare2Ip(new Addr('11.0.0.0'))).toBe(-1);
+  expect(new Addr('10.0.0.0').compare2Ip(new Addr('255.255.255.255'))).toBe(-1);
 
-  expect(new Addr('2002:DEAD::1').compare2ip(new Addr('2002:DEAD::1'))).toBe(0);
-  expect(new Addr('2002:DEAD::1').compare2ip(new Addr('2002:DEAD::'))).toBe(1);
-  expect(new Addr('2002:DEAD::1').compare2ip(new Addr('2002::'))).toBe(1);
-  expect(new Addr('2002:DEAD::1').compare2ip(new Addr('::'))).toBe(1);
-  expect(new Addr('2002:DEAD::1').compare2ip(new Addr('2002:DEAD::2'))).toBe(-1);
-  expect(new Addr('2002:DEAD::1').compare2ip(new Addr('2002:DEAE::'))).toBe(-1);
-  expect(new Addr('2002:DEAD::1').compare2ip(new Addr('FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF'))).toBe(-1);
+  expect(new Addr('2002:DEAD::1').compare2Ip(new Addr('2002:DEAD::1'))).toBe(0);
+  expect(new Addr('2002:DEAD::1').compare2Ip(new Addr('2002:DEAD::'))).toBe(1);
+  expect(new Addr('2002:DEAD::1').compare2Ip(new Addr('2002::'))).toBe(1);
+  expect(new Addr('2002:DEAD::1').compare2Ip(new Addr('::'))).toBe(1);
+  expect(new Addr('2002:DEAD::1').compare2Ip(new Addr('2002:DEAD::2'))).toBe(-1);
+  expect(new Addr('2002:DEAD::1').compare2Ip(new Addr('2002:DEAE::'))).toBe(-1);
+  expect(new Addr('2002:DEAD::1').compare2Ip(new Addr('FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF'))).toBe(-1);
 });

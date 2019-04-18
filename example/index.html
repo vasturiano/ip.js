@@ -44,11 +44,11 @@
   // 5.0.0.0
   console.log(ip.subIp(new Ip.Addr('5.0.0.0')).toString());
   // 0
-  console.log(ip.compare2ip(new Ip.Addr('10.0.0.0')));
+  console.log(ip.compare2Ip(new Ip.Addr('10.0.0.0')));
   // 1 1 1
-  console.log(ip.compare2ip(new Ip.Addr('9.255.255.255')), ip.compare2ip(new Ip.Addr('9.0.0.0')), ip.compare2ip(new Ip.Addr('0.0.0.0')));
+  console.log(ip.compare2Ip(new Ip.Addr('9.255.255.255')), ip.compare2Ip(new Ip.Addr('9.0.0.0')), ip.compare2Ip(new Ip.Addr('0.0.0.0')));
   // -1 -1 -1
-  console.log(ip.compare2ip(new Ip.Addr('10.0.0.1')), ip.compare2ip(new Ip.Addr('11.0.0.0')), ip.compare2ip(new Ip.Addr('255.255.255.255')));
+  console.log(ip.compare2Ip(new Ip.Addr('10.0.0.1')), ip.compare2Ip(new Ip.Addr('11.0.0.0')), ip.compare2Ip(new Ip.Addr('255.255.255.255')));
 
   ip = new Ip.Addr('2002:DEAD::1');
   // 6
@@ -64,11 +64,11 @@
   // 1002:dead::1
   console.log(ip.subIp(new Ip.Addr('1000::')).toString());
   // 0
-  console.log(ip.compare2ip(new Ip.Addr('2002:DEAD::1')));
+  console.log(ip.compare2Ip(new Ip.Addr('2002:DEAD::1')));
   // 1 1 1
-  console.log(ip.compare2ip(new Ip.Addr('2002:DEAD::')), ip.compare2ip(new Ip.Addr('2002::')), ip.compare2ip(new Ip.Addr('::')));
+  console.log(ip.compare2Ip(new Ip.Addr('2002:DEAD::')), ip.compare2Ip(new Ip.Addr('2002::')), ip.compare2Ip(new Ip.Addr('::')));
   // -1 -1 -1
-  console.log(ip.compare2ip(new Ip.Addr('2002:DEAD::2')), ip.compare2ip(new Ip.Addr('2002:DEAE::')), ip.compare2ip(new Ip.Addr('FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF')));
+  console.log(ip.compare2Ip(new Ip.Addr('2002:DEAD::2')), ip.compare2Ip(new Ip.Addr('2002:DEAE::')), ip.compare2Ip(new Ip.Addr('FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF')));
 
   /* Prefix */
   prefix = new Ip.Prefix('10.0.0.0/24');

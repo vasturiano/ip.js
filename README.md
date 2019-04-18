@@ -64,7 +64,7 @@ The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or
 | **isIPv4**() | - | *boolean* | Whether the address family is *IPv4*. |
 | **addIp**(*ip*) | ip: *Addr* | *Addr* | Given another IP address (*Addr* object), returns a new *Addr* object representing the numeric sum of the two IP addresses. If the two IPs are of different address families, this operation will fail due to the incompatibility between addresses. |
 | **subIp**(*ip*) | ip: *Addr* | *Addr* | Given another IP address (*Addr* object), returns a new *Addr* object representing the numeric subtraction of the input IP from this one. Make sure the input IP is no higher then the existing one, which would lead to negative values. If the two IPs are of different address families, this operation will fail due to the incompatibility between addresses. |
-| **compare2ip**(*ip*) | ip: *Addr* | *number*: `-1`, `0` or `1` | Performs a numeric comparison with another IP address (*Addr* object), and returns `-1` if the current IP is lower than the input, `0` if they are equal and `1` if the current IP is higher than the input. If the two IPs are of different address families, this method returns `null`. |
+| **compare2Ip**(*ip*) | ip: *Addr* | *number*: `-1`, `0` or `1` | Performs a numeric comparison with another IP address (*Addr* object), and returns `-1` if the current IP is lower than the input, `0` if they are equal and `1` if the current IP is higher than the input. If the two IPs are of different address families, this method returns `null`. |
 
 ### Prefix
 

@@ -123,7 +123,7 @@ class Addr {
   subIp = another => new Addr(this.op.sub(this.toNum(), another.toNum()));
 
   // Return value: -1: this<that, 0: this=that, 1: this>that, null: different families
-  compare2ip(that) {
+  compare2Ip(that) {
     const op = this.op;
 
     if (this.version() !== that.version())
