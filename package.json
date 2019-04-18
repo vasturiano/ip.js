@@ -1,6 +1,6 @@
 {
   "name": "ip.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A JS library for manipulating IP addresses, prefixes and ranges. Supports both IPv4 and IPv6.",
   "unpkg": "dist/ip.min.js",
   "main": "dist/ip.common.js",
