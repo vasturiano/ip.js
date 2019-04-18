@@ -14,6 +14,10 @@ class Prefix {
       if (isNaN(this.cidr)) {
         throw new Error(`Invalid numeric CIDR in prefix ${ipPrefix}`);
       }
+
+      if (this.cidr < 0 || this.cidr > (this.ip.isIPv4() ? 32 : 128)) {
+        throw new Error(`Cidr /${this.cidr} outside bounds in prefix ${ipPrefix}`);
+      }
     }
     this.op = this.ip.op;
   }

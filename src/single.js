@@ -28,8 +28,15 @@ class Addr {
       // use bigint to parse strings
       let num = op.num(0);
       let exp = isV4 ? 32 - 8 : 128 - 16;
+      const maxSegmentNum = Math.pow(2, isV4 ? 8 : 16) - 1;
       const numFinalSegments = isV4 ? 0 : (ip.split('::')[1] || '').split(':').length;
-      ip.split(isV4 ? '.' : ':').forEach(seg => {
+      const segments = ip.split(isV4 ? '.' : ':');
+
+      if (segments.length > (isV4 ? 4 : 16)) {
+        throw new Error(`Failed to parse ${ip}: too many octets.`);
+      }
+
+      segments.forEach(seg => {
         if (!seg.length) {
           return exp = (numFinalSegments - 1) * (isV4 ? 4 : 16);
         }
@@ -37,6 +44,11 @@ class Addr {
         if (isNaN(segNum)) {
           throw new Error(`Unable to parse address portion "${seg}" from ${ip}`);
         }
+
+        if (segNum < 0 || segNum > maxSegmentNum) {
+          throw new Error(`Octet "${seg}" outside bounds in ${ip}`);
+        }
+
         num = op.add(num, op.mult(op.num(segNum), op.num(Math.pow(2, exp))));
         exp -= isV4 ? 8 : 16;
       });
