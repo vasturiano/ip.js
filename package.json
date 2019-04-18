@@ -38,9 +38,10 @@
   "scripts": {
     "build": "rimraf dist && rollup -c",
     "dev": "rollup -c -w",
+    "test": "jest",
     "minify": "terser dist/ip.js -o dist/ip.min.js -c -m --comments '/Version/'",
     "build-module": "rollup -c rollup.config.module.js",
-    "prepare": "npm run build && npm run minify && npm run build-module"
+    "prepare": "npm run test && npm run build && npm run minify && npm run build-module"
   },
   "dependencies": {
     "jsbi": "^2.0.5"
@@ -50,6 +51,7 @@
     "@babel/plugin-proposal-class-properties": "^7.4.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
+    "jest": "^24.7.1",
     "rimraf": "^2.6.3",
     "rollup": "^1.7.4",
     "rollup-plugin-babel": "^4.3.2",
