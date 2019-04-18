@@ -21,21 +21,20 @@ or even
 ## Usage example
 
 ```
-const myPrefix = new Ip.Prefix('10.0.0.0/24');
-const myV6Prefix = new Ip.Prefix('2002:DEAD::/48');
 const myIp = new Ip.Addr('10.0.0.42');
-const myRange = new Ip.Range('10.0.0.0', '10.0.0.42');
-
 myIp.version(); // 4
 myIp.toNum(); // 167772160
 
+const myPrefix = new Ip.Prefix('10.0.0.0/24');
 myPrefix.countIps(); // 256
 myPrefix.slice(26); // [10.0.0.0/26, 10.0.0.64/26, 10.0.0.128/26, 10.0.0.192/26]
 
+const myV6Prefix = new Ip.Prefix('2002:DEAD::/48');
 myV6Prefix.isIpV4(); // false
 myV6Prefix.firstIp(); // 2002:dead::
 myV6Prefix.lastIp(); // 2002:dead::ffff:ffff:ffff:ffff:ffff
 
+const myRange = new Ip.Range('10.0.0.0', '10.0.0.42');
 myRange.countIps(); // 43
 myRange.toEncompassingPrefix(); // 10.0.0.0/26
 myRange.toPrefixes(); // [10.0.0.0/27, 10.0.0.32/29, 10.0.0.40/31, 10.0.0.42/32]
