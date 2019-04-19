@@ -10,15 +10,16 @@ class Prefix {
       const prefix = ipPrefix.split('/');
       this.ip = new Addr(prefix[0], isV4);
       this.cidr = prefix.length > 1 ? +prefix[1] : this.ip.isIPv4() ? 32 : 128; // auto-add single IP CIDR if not included
-
-      if (isNaN(this.cidr)) {
-        throw new Error(`Invalid numeric CIDR in prefix ${ipPrefix}`);
-      }
-
-      if (this.cidr < 0 || this.cidr > (this.ip.isIPv4() ? 32 : 128)) {
-        throw new Error(`Cidr /${this.cidr} outside bounds in prefix ${ipPrefix}`);
-      }
     }
+
+    if (isNaN(this.cidr)) {
+      throw new Error(`Invalid numeric CIDR in prefix ${ipPrefix}`);
+    }
+
+    if (this.cidr < 0 || this.cidr > (this.ip.isIPv4() ? 32 : 128)) {
+      throw new Error(`Cidr /${this.cidr} outside bounds in prefix ${ipPrefix}`);
+    }
+
     this.op = this.ip.op;
   }
 
