@@ -31,9 +31,7 @@
     "url": "https://github.com/vasturiano/ip.js/issues"
   },
   "files": [
-    "src/**/*",
-    "dist/**/*",
-    "example/**/*"
+    "dist/**/*"
   ],
   "scripts": {
     "build": "rimraf dist && rollup -c",
@@ -47,17 +45,16 @@
     "jsbi": "^2.0.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.0",
-    "@babel/plugin-proposal-class-properties": "^7.4.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
-    "@babel/preset-env": "^7.4.2",
-    "jest": "^24.7.1",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "jest": "^24.8.0",
     "rimraf": "^2.6.3",
-    "rollup": "^1.7.4",
+    "rollup": "^1.13.1",
     "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-commonjs": "^9.2.2",
-    "rollup-plugin-node-resolve": "^4.0.1",
-    "rollup-watch": "^4.3.1",
-    "terser": "^3.17.0"
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-node-resolve": "^5.0.1",
+    "terser": "^4.0.0"
   }
 }
