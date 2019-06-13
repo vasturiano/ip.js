@@ -1,8 +1,11 @@
-# IP.js
+IP.js
+=====
+
+[![NPM package][npm-img]][npm-url]
+[![Build Size][build-size-img]][build-size-url]
+[![Dependencies][dependencies-img]][dependencies-url]
 
 A JS library for manipulating IP addresses, prefixes and ranges. Supports both IPv4 and IPv6. Uses [JSBI BigInt](https://github.com/GoogleChromeLabs/jsbi) to handle IPv6 operations, to retain numeric resolution beyond the [53-bit max safe integer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER) in JavaScript.  
-
-[![NPM](https://nodei.co/npm/ip.js.png?compact=true)](https://nodei.co/npm/ip.js/)
 
 ## Quick start
 
@@ -125,3 +128,11 @@ The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or
 | **ipAtPerc**(*perc*) | perc: *number* | *Addr* | Returns the IP address that is at the percentual position (`0`-`100`) within the range. |
 | **overlapPerc**(*childRange*) | childRange: *Prefix* of *Range* | [*number*, *number*] | Returns the start and end percentage of overlap between this range and a child prefix/range. Values `<0` or `>100` are possible if the ranges only partially overlap or do not overlap at all. Percentages are relative to the current range. | 
 | getNeighborPrefixes() | - | `{ up, left, right, downleft, downright }`*Prefix* | Returns the 5 CIDR neighbor prefixes: one CIDR *up*, two side siblings *left* and *right*, first and second half down (*downleft* and *downright*). |
+
+
+[npm-img]: https://img.shields.io/npm/v/ip.js.svg
+[npm-url]: https://npmjs.org/package/ip.js
+[build-size-img]: https://img.shields.io/bundlephobia/minzip/ip.js.svg
+[build-size-url]: https://bundlephobia.com/result?p=ip.js
+[dependencies-img]: https://img.shields.io/david/vasturiano/ip.js.svg
+[dependencies-url]: https://david-dm.org/vasturiano/ip.js
