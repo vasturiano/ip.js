@@ -5,23 +5,8 @@ import { name, homepage, version } from './package.json';
 
 const libName = name.replace(/\.js$/, '');
 
-export default [{
+export default {
   input: 'src/index.js',
-  output: [
-    {
-      format: 'es',
-      name: 'Ip',
-      file: `dist/${libName}.module.js`,
-      sourcemap: false
-    }
-  ],
-  plugins: [
-    babel({ exclude: 'node_modules/**' }),
-    resolve({mainFields: ['main']}),    
-    commonJs(),
-  ]
-},{
-  input: `dist/${libName}.module.js`,
   output: [
     {
       format: 'umd',
@@ -32,6 +17,8 @@ export default [{
     }
   ],
   plugins: [
-    babel()
+    babel({ exclude: 'node_modules/**' }),
+    resolve({ browser: true }),
+    commonJs()
   ]
-}];
+};
