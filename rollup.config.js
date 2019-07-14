@@ -18,7 +18,7 @@ export default {
   ],
   plugins: [
     babel({ exclude: 'node_modules/**' }),
-    resolve(),
+    resolve({ browser: true }),
     commonJs()
   ]
 };
