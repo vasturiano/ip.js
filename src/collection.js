@@ -45,11 +45,21 @@ class Prefix {
   // Return a valid prefix by setting the correct start IP that fits this prefix length
   correctBitBoundary() {
     const op = this.op;
+    const nBits = this.isIPv4() ? 32 : 128;
 
-    const mask = op.sub(op.exp(op.num(2), op.num((this.isIPv4() ? 32 : 128) - this.cidr)), op.num(1));
-    const correctedNum = op.bitAnd(this.ip.toNum(), op.bitNeg(mask));
+    const mask = op.sub(op.exp(op.num(2), op.num(nBits - this.cidr)), op.num(1));
+    const correctedNum = fixSign(op.bitAnd(this.ip.toNum(), op.bitNeg(mask)));
 
     return new Prefix(new Addr(correctedNum), this.cidr, this.isIPv4());
+
+    //
+
+    function fixSign(n) {
+      // fix sign inversions (for nums >= 2**31)
+      return op.lt(n, op.num(0))
+        ? op.add(n, op.exp(op.num(2), op.num(nBits)))
+        : n
+    }
   }
 
   // Slice the prefix into an array of smaller prefixes of a specified CIDR size
