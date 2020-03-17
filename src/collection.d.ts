@@ -48,7 +48,7 @@ declare class Range {
 
   ipRelPosition(ip: Addr, after?: boolean): number;
   ipAtPerc(perc: number): Addr;
-  overlapPerc(another: Range): number;
+  overlapPerc(another: Prefix | Range): [number, number];
 
   getNeighborPrefixes(): { up: Prefix, left: Prefix, right: Prefix, downleft: Prefix, downright: Prefix };
 }
