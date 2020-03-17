@@ -56,7 +56,7 @@ export default [
   { // expose TS declarations
     input: 'src/index.d.ts',
     output: [{
-      file: `dist/${name}.d.ts`,
+      file: `dist/${libName}.d.ts`,
       format: 'es'
     }],
     plugins: [dts()],

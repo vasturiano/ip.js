@@ -6,7 +6,7 @@
   "jsdelivr": "dist/ip.min.js",
   "main": "dist/ip.common.js",
   "module": "dist/ip.module.js",
-  "types": "dist/ip.module.d.ts",
+  "types": "dist/ip.d.ts",
   "keywords": [
     "ip",
     "prefix",
