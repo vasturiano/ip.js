@@ -127,7 +127,7 @@ The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or
 | **ipRelPosition**(*ip*, [*after*]]) | ip: *Addr*, after: *boolean* | *number* | Returns the percentual value (`0` to `1`) of what is the relative position of the specified IP within this address range. Values `<0` or `>1` are possible if the IP is outside of the range. The second (optional) argument **after** (default to `false`) indicates if the value should be calculated for immediately before the IP address (`false`) or after (`true`). Returns `null` if the IP is not of the same address family as the range. |
 | **ipAtPerc**(*perc*) | perc: *number* | *Addr* | Returns the IP address that is at the percentual position (`0`-`100`) within the range. |
 | **overlapPerc**(*childRange*) | childRange: *Prefix* of *Range* | [*number*, *number*] | Returns the start and end percentage of overlap between this range and a child prefix/range. Values `<0` or `>100` are possible if the ranges only partially overlap or do not overlap at all. Percentages are relative to the current range. | 
-| getNeighborPrefixes() | - | `{ up, left, right, downleft, downright }`*Prefix* | Returns the 5 CIDR neighbor prefixes: one CIDR *up*, two side siblings *left* and *right*, first and second half down (*downleft* and *downright*). |
+| **getNeighborPrefixes**() | - | `{ up, left, right, downleft, downright }`*Prefix* | Returns the 5 CIDR neighbor prefixes: one CIDR *up*, two side siblings *left* and *right*, first and second half down (*downleft* and *downright*). |
 
 
 [npm-img]: https://img.shields.io/npm/v/ip.js.svg
