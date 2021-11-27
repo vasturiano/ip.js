@@ -42,21 +42,21 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "jsbi": "^3.1.4"
+    "jsbi": "^4.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.14.2",
-    "@babel/preset-env": "^7.14.2",
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
     "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^19.0.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
-    "jest": "^27.0.1",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "jest": "^27.3.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.50.0",
-    "rollup-plugin-dts": "^3.0.2",
+    "rollup": "^2.60.1",
+    "rollup-plugin-dts": "^4.0.1",
     "rollup-plugin-terser": "^7.0.2",
-    "typescript": "^4.2.4"
+    "typescript": "^4.5.2"
   }
 }
