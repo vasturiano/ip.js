@@ -133,7 +133,7 @@ class Range {
       prefixes.push(prefix);
       sweepIp = prefix.lastIp().addIp(oneIP);
 
-      if (sweepIp.compare2Ip(zeroIP) === 0) // Counter flipped back to start
+      if (sweepIp.compare2Ip(zeroIP) === 0 || sweepIp.version() > endIp.version()) // Counter flipped back to start
         break;
     }
 

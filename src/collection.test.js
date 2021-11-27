@@ -103,6 +103,8 @@ describe('Range', () => {
   test('toPrefixes', () => {
     expect(new Range('10.0.0.0', '10.5.255.255').toPrefixes().map(p => p.toString())).toEqual(["10.0.0.0/14", "10.4.0.0/15"]);
     expect(new Range('2002:DEAD::', '2002:DEAD::E').toPrefixes().map(p => p.toString())).toEqual(["2002:dead::/125", "2002:dead::8/126", "2002:dead::c/127", "2002:dead::e/128"]);
+
+    expect(new Prefix('0/0').toRange().toPrefixes().map(p => p.toString())).toEqual(['0.0.0.0/0']);
   });
 
   test('toEncompassingPrefix', () => {

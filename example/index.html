@@ -128,6 +128,10 @@
   // ["up: 10.0.0.0/15", "left: 9.255.0.0/16", "right: 10.1.0.0/16", "downleft: 10.0.0.0/17", "downright: 10.0.128.0/17"]
   console.log(Object.entries(new Ip.Range('10.0.0.0', '10.0.255.255').getNeighborPrefixes()).map(([type,p]) => `${type}: ${p.toString()}`));
 
+  prefix = new Ip.Prefix('0/0');
+  // ['0.0.0.0/0']
+  console.log(prefix.toRange().toPrefixes().map(p => p.toString()));
+
   range = new Ip.Range('2002:DEAD::', '2002:DEAD::E');
   // false
   console.log(range.isIPv4());
