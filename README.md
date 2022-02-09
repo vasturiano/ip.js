@@ -3,27 +3,27 @@ IP.js
 
 [![NPM package][npm-img]][npm-url]
 [![Build Size][build-size-img]][build-size-url]
-[![Dependencies][dependencies-img]][dependencies-url]
+[![NPM Downloads][npm-downloads-img]][npm-downloads-url]
 
 A JS library for manipulating IP addresses, prefixes and ranges. Supports both IPv4 and IPv6. Uses [JSBI BigInt](https://github.com/GoogleChromeLabs/jsbi) to handle IPv6 operations, to retain numeric resolution beyond the [53-bit max safe integer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER) in JavaScript.  
 
 ## Quick start
 
-```
+```js
 import { Addr, Prefix, Range } from 'ip.js';
 ```
 or
-```
+```js
 const Ip = require('ip.js');
 ```
 or even
-```
+```html
 <script src="//unpkg.com/ip.js"></script>
 ```
 
 ## Usage example
 
-```
+```js
 const myIp = new Ip.Addr('10.0.0.42');
 myIp.version(); // 4
 myIp.toNum(); // 167772160
@@ -130,9 +130,9 @@ The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or
 | **getNeighborPrefixes**() | - | `{ up, left, right, downleft, downright }`*Prefix* | Returns the 5 CIDR neighbor prefixes: one CIDR *up*, two side siblings *left* and *right*, first and second half down (*downleft* and *downright*). |
 
 
-[npm-img]: https://img.shields.io/npm/v/ip.js.svg
+[npm-img]: https://img.shields.io/npm/v/ip.js
 [npm-url]: https://npmjs.org/package/ip.js
-[build-size-img]: https://img.shields.io/bundlephobia/minzip/ip.js.svg
+[build-size-img]: https://img.shields.io/bundlephobia/minzip/ip.js
 [build-size-url]: https://bundlephobia.com/result?p=ip.js
-[dependencies-img]: https://img.shields.io/david/vasturiano/ip.js.svg
-[dependencies-url]: https://david-dm.org/vasturiano/ip.js
+[npm-downloads-img]: https://img.shields.io/npm/dt/ip.js
+[npm-downloads-url]: https://www.npmtrends.com/ip.js
