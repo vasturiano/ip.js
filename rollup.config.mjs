@@ -1,9 +1,11 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonJs from '@rollup/plugin-commonjs';
 import babel from '@rollup/plugin-babel';
-import { terser } from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import dts from 'rollup-plugin-dts';
-import { name, homepage, version, dependencies } from './package.json';
+
+import pkg from './package.json' assert { type: 'json' };
+const { name, homepage, version, dependencies } = pkg;
 
 const libName = name.replace(/\.js$/, '');
 
