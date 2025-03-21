@@ -18,7 +18,7 @@ const Ip = require('ip.js');
 ```
 or even
 ```html
-<script src="//unpkg.com/ip.js"></script>
+<script src="//cdn.jsdelivr.net/npm/ip.js"></script>
 ```
 
 ## Usage example
