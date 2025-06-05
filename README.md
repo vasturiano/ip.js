@@ -129,6 +129,11 @@ The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or
 | **overlapPerc**(*childRange*) | childRange: *Prefix* of *Range* | [*number*, *number*] | Returns the start and end percentage of overlap between this range and a child prefix/range. Values `<0` or `>100` are possible if the ranges only partially overlap or do not overlap at all. Percentages are relative to the current range. | 
 | **getNeighborPrefixes**() | - | `{ up, left, right, downleft, downright }`*Prefix* | Returns the 5 CIDR neighbor prefixes: one CIDR *up*, two side siblings *left* and *right*, first and second half down (*downleft* and *downright*). |
 
+## ❤️ Support This Project
+
+If you find this module useful and would like to support its development, you can [buy me a ☕](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=L398E7PKP47E8&currency_code=USD&source=url). Your contributions help keep open-source sustainable!
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=L398E7PKP47E8&currency_code=USD&source=url)
+
 
 [npm-img]: https://img.shields.io/npm/v/ip.js
 [npm-url]: https://npmjs.org/package/ip.js
