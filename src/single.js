@@ -16,6 +16,10 @@ class Addr {
       deriveFamily && (this.isV4 = ip < Math.pow(2, 32));
       this.num = ip;
 
+    } else if (typeof ip === 'bigint') {
+      deriveFamily && (this.isV4 = ip < BigInt(Math.pow(2, 32)));
+      this.num = this.isV4 ? Number(ip) : bigintOp.num(ip.toString());
+
     } else if (isBigInt(ip)) {
       deriveFamily && (this.isV4 = bigintOp.lt(ip, Math.pow(2, 32)));
       this.num = ip;
