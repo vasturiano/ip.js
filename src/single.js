@@ -1,8 +1,3 @@
-import PolyBigInt, { isBigInt } from './polyBigInt';
-
-const numOp = PolyBigInt(false);
-const bigintOp = PolyBigInt(true);
-
 class Addr {
   constructor(ip, isV4) {
     const deriveFamily = isV4 === undefined;
@@ -18,19 +13,16 @@ class Addr {
 
     } else if (typeof ip === 'bigint') {
       deriveFamily && (this.isV4 = ip < BigInt(Math.pow(2, 32)));
-      this.num = this.isV4 ? Number(ip) : bigintOp.num(ip.toString());
-
-    } else if (isBigInt(ip)) {
-      deriveFamily && (this.isV4 = bigintOp.lt(ip, Math.pow(2, 32)));
-      this.num = ip;
+      this.num = this.isV4 ? Number(ip) : ip;
 
     } else {
       // Parse as string
       const isV4 = ip.indexOf(':') === -1;
 
-      const op = isV4 ? numOp : bigintOp;
-      // use bigint to parse strings
-      let num = op.num(0);
+      const numClass = isV4 ? Number : BigInt;
+
+      // use bigint to parse IPv6 strings
+      let num = isV4 ? 0 : 0n;
       let exp = isV4 ? 32 - 8 : 128 - 16;
       const maxSegmentNum = Math.pow(2, isV4 ? 8 : 16) - 1;
       const numFinalSegments = isV4 ? 0 : (ip.split('::')[1] || '').split(':').length;
@@ -53,7 +45,7 @@ class Addr {
           throw new Error(`Octet "${seg}" outside bounds in ${ip}`);
         }
 
-        num = op.add(num, op.mult(op.num(segNum), op.num(Math.pow(2, exp))));
+        num = num + numClass(segNum) * numClass(Math.pow(2, exp));
         exp -= isV4 ? 8 : 16;
       });
 
@@ -61,26 +53,25 @@ class Addr {
       this.num = num;
     }
 
-    this.op = this.isV4 ? numOp : bigintOp; // use big int operations for IPv6
-
     // ensure num is of same type as operations
-    this.num = (isBigInt(this.num) ? bigintOp : numOp)[this.isV4 ? 'toNum' : 'toBigInt'](this.num);
+    this.num = this.isV4 ? Number(this.num) : BigInt(this.num);
   }
 
   version = () => this.isV4 ? 4 : 6;
   isIPv4 = () => this.isV4;
 
   toString() {
-    const op = this.op;
-
-    const segLen = op.num(Math.pow(2, this.isV4 ? 8 : 16));
+    let segLen = Math.pow(2, this.isV4 ? 8 : 16);
+    !this.isV4 && (segLen = BigInt(segLen));
 
     let num = this.num;
-    // let str = (num%segLen).toString(this.isV4 ? 10 : 16);
-    let str = op.toString(op.rem(num, segLen), this.isV4 ? 10 : 16);
+
+    const floorOp = this.isV4 ? Math.floor : n => n;
+
+    let str = (num % segLen).toString(this.isV4 ? 10 : 16);
     for (let i=1; i < (this.isV4 ? 4 : 8); i++) {
-      num = op.div(num, segLen);
-      str = `${op.toString(op.rem(num, segLen), this.isV4 ? 10 : 16)}${this.isV4 ? '.' : ':'}${str}`;
+      num = floorOp(num / segLen);
+      str = `${(num % segLen).toString(this.isV4 ? 10 : 16)}${this.isV4 ? '.' : ':'}${str}`;
     }
 
     return this.isV4 ? str : compressV6(str);
@@ -114,7 +105,7 @@ class Addr {
 
   // Returns a string with the binary representation of the IP (v4: 32 bits long, v6: 128 bits long)
   toBin() {
-    let bin = this.op.toString(this.num, 2);
+    let bin = this.num.toString(2);
 
     // Pad with 0s
     while (bin.length < (this.isV4 ? 32 : 128))
@@ -123,22 +114,20 @@ class Addr {
     return bin;
   }
 
-  addIp = another => new Addr(this.op.add(this.toNum(), another.toNum()));
-  subIp = another => new Addr(this.op.sub(this.toNum(), another.toNum()));
+  addIp = another => new Addr(this.toNum() + another.toNum(), this.isV4 ? undefined : false);
+  subIp = another => new Addr(this.toNum() - another.toNum(), this.isV4 ? undefined : false);
 
   // Return value: -1: this<that, 0: this=that, 1: this>that, null: different families
   compare2Ip(that) {
-    const op = this.op;
-
     if (this.version() !== that.version())
       return null;
 
     return compareNums(this.toNum(), that.toNum());
 
     function compareNums(numa, numb) {
-      return op.eq(numa, numb)
+      return numa === numb
         ? 0
-        : op.lt(numa, numb)
+        : numa < numb
           ? -1
           : 1;
     }

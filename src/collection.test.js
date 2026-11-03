@@ -49,17 +49,23 @@ describe('Prefix', () => {
 
   test('countIps', () => {
     expect(new Prefix('10.0.0.0/24').countIps()).toBe(256);
-    expect(new Prefix('2002:DEAD::/48').countIps().toString()).toBe('1208925819614629174706176');
+    expect(new Prefix('2002:DEAD::/48').countIps()).toBe(1208925819614629174706176n);
+    expect(new Prefix('::/0').countIps()).toBe(1n << 128n);
   });
 
   test('correctBitBoundary', () => {
     expect(new Prefix('10.0.0.42/24').correctBitBoundary().toString()).toBe('10.0.0.0/24');
+    expect(new Prefix('128.0.0.1/1').correctBitBoundary().toString()).toBe('128.0.0.0/1');
+    expect(new Prefix('255.255.255.255/0').correctBitBoundary().toString()).toBe('0.0.0.0/0');
     expect(new Prefix('2002:DEAD::12:A/126').correctBitBoundary().toString()).toBe('2002:dead::12:8/126');
+    expect(new Prefix('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/0').correctBitBoundary().toString()).toBe('::/0');
+    expect(new Prefix('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/128').correctBitBoundary().toString()).toBe('ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff/128');
   });
 
   test('slice', () => {
     expect(new Prefix('10.0.0.0/24').slice(26).map(p => p.toString())).toEqual(["10.0.0.0/26", "10.0.0.64/26", "10.0.0.128/26", "10.0.0.192/26"]);
     expect(new Prefix('2002:DEAD::/48').slice(50).map(p => p.toString())).toEqual(["2002:dead::/50", "2002:dead::4000:0:0:0:0/50", "2002:dead::8000:0:0:0:0/50", "2002:dead::c000:0:0:0:0/50"]);
+    expect(new Prefix('::/126').slice(127).map(p => p.toString())).toEqual(['::/127', '::2/127']);
 
   });
 });
@@ -92,7 +98,8 @@ describe('Range', () => {
 
   test('countIps', () => {
     expect(new Range('10.0.0.0', '10.5.255.255').countIps()).toBe(393216);
-    expect(new Range('2002:DEAD::', '2002:DEAD::E').countIps().toString()).toBe('15');
+    expect(new Range('2002:DEAD::', '2002:DEAD::E').countIps()).toBe(15n);
+    expect(new Range('::', '::3').countIps()).toBe(4n);
   });
 
   test('cidrCount', () => {
@@ -103,6 +110,7 @@ describe('Range', () => {
   test('toPrefixes', () => {
     expect(new Range('10.0.0.0', '10.5.255.255').toPrefixes().map(p => p.toString())).toEqual(["10.0.0.0/14", "10.4.0.0/15"]);
     expect(new Range('2002:DEAD::', '2002:DEAD::E').toPrefixes().map(p => p.toString())).toEqual(["2002:dead::/125", "2002:dead::8/126", "2002:dead::c/127", "2002:dead::e/128"]);
+    expect(new Range('::1', '::3').toPrefixes().map(p => p.toString())).toEqual(['::1/128', '::2/127']);
 
     expect(new Prefix('0/0').toRange().toPrefixes().map(p => p.toString())).toEqual(['0.0.0.0/0']);
   });

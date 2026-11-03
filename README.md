@@ -5,7 +5,7 @@ IP.js
 [![Build Size][build-size-img]][build-size-url]
 [![NPM Downloads][npm-downloads-img]][npm-downloads-url]
 
-A JS library for manipulating IP addresses, prefixes and ranges. Supports both IPv4 and IPv6. Uses [JSBI BigInt](https://github.com/GoogleChromeLabs/jsbi) to handle IPv6 operations, to retain numeric resolution beyond the [53-bit max safe integer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER) in JavaScript.  
+A JS library for manipulating IP addresses, prefixes and ranges. Supports both IPv4 and IPv6. Uses native JavaScript [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) values for IPv6 operations, retaining numeric resolution beyond the [53-bit max safe integer](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER). Native `bigint` requires a modern JavaScript runtime with BigInt support (ES2020 or later); TypeScript consumers should also target ES2020 or later.
 
 ## Quick start
 
@@ -53,7 +53,7 @@ Class to manipulate single IP addresses.
 
 <b>new Addr</b>(<i>ip</i>, [<i>isV4</i>])
 
-Creates a new object representing an IP address, based on the input `ip` argument. `ip` can be either a <i>string</i> (f.e. `10.0.0.0` or `2002:DEAD::`), a <i>number</i> (`167772160`), a [BigInt](https://github.com/GoogleChromeLabs/jsbi), or another instance of `Addr`.
+Creates a new object representing an IP address, based on the input `ip` argument. `ip` can be either a <i>string</i> (f.e. `10.0.0.0` or `2002:DEAD::`), a <i>number</i> (`167772160`), a native JavaScript `bigint` value (for example, `256n`), or another instance of `Addr`.
 The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or <i>IPv6</i> (`false`)). If it is `undefined`, the address family is automatically derived from the input `ip` by either looking for specific family syntax in the <i>string</i>, or checking for numbers larger than 32 bit.
 
 #### Methods
@@ -61,7 +61,7 @@ The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or
 | Method | Arguments | Return Value | Description |
 | --- | :--: | :--: | --- |
 | **toString**() | - | *string* | Returns a string representation of the IP address. *IPv6* addresses are lowercase and compressed by removing empty octets. |
-| **toNum**() | - | *number* or *BigInt* | Returns a numeric representation of the IP address. IPv4 addresses are represented as regular JS numbers, while IPv6 are represented as [BigInts](https://github.com/GoogleChromeLabs/jsbi). |
+| **toNum**() | - | *number* or *bigint* | Returns a numeric representation of the IP address. IPv4 addresses are represented as regular JS numbers, while IPv6 addresses are represented as native JavaScript `bigint` values. |
 | **toBin**() | - | *string* | Returns a string with the binary representation of the IP (*IPv4*: 32 bits long, *IPv6*: 128 bits long). |
 | **version**() | - | *number*: `4` or `6` | Get the IP address family. |
 | **isIPv4**() | - | *boolean* | Whether the address family is *IPv4*. |
@@ -96,7 +96,7 @@ The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or
 | **firstIp**() | - | *Addr* | Returns an *Addr* object representing the first IP address in the prefix. |
 | **lastIp**() | - | *Addr* | Returns an *Addr* object representing the last IP address in the prefix. |
 | **getCidr**() | - | *number* | Returns the CIDR size of the prefix. |
-| **countIps**() | - | *number* (IPv4) or *BigInt* (IPv6) | The number of addresses in the prefix (represented as regular number if the prefix is *IPv4*, or a *BigInt* if it is *IPv6*). The result will always be a **power of 2** number, according to the prefix's CIDR size. |
+| **countIps**() | - | *number* (IPv4) or *bigint* (IPv6) | The number of addresses in the prefix (represented as regular number if the prefix is *IPv4*, or a native `bigint` if it is *IPv6*). The result will always be a **power of 2** number, according to the prefix's CIDR size. |
 | **correctBitBoundary**() | - | *Prefix* | Validates and returns a new *Prefix* object by setting the correct start IP address that falls on this prefix CIDR bit boundary. |
 | **slice**(*cidr*) | cidr: *number* | *[]Prefix* | De-aggregates the prefix into an array of smaller prefixes of the specified CIDR size. Each smaller prefix is represented as a *Prefix* object. If the specified CIDR size is larger than the current one, no de-aggregation is performed. |
 
@@ -120,7 +120,7 @@ The optional argument `isV4` defines the address family (<i>IPv4</i> (`true`) or
 | **isIPv4**() | - | *boolean* | Whether the range address family is *IPv4*. |
 | **firstIp**() | - | *Addr* | Returns an *Addr* object representing the first IP address in the range. |
 | **lastIp**() | - | *Addr* | Returns an *Addr* object representing the last IP address in the range. |
-| **countIps**() | - | *number* (IPv4) or *BigInt* (IPv6) | The number of addresses in the address range (represented as regular number if the range is *IPv4*, or a *BigInt* if it is *IPv6*). |
+| **countIps**() | - | *number* (IPv4) or *bigint* (IPv6) | The number of addresses in the address range (represented as regular number if the range is *IPv4*, or a native `bigint` if it is *IPv6*). |
 | **cidrCount**() | - | *number* | The calculated CIDR size based on the number of addresses in the address range. This number will be fracional if the address count doesn't fall on a *power of 2* bit boundary. |
 | **toPrefixes**() | - | *[]Prefix* | Generates the array of adjacent prefixes that collectively represent this address range, without any gaps or overlaps. |
 | **toEncompassingPrefix**() | - | *Prefix* | Returns the closest smallest valid prefix that fully encompasses this address range. |

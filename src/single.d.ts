@@ -1,14 +1,10 @@
-import JSBI from 'jsbi';
-import { numOperations } from './polyBigInt';
-
-export type polyNum = number | JSBI;
+export type polyNum = number | bigint;
 
 declare class Addr {
-  constructor(ip: Addr | number | JSBI | string, isV4?: boolean);
+  constructor(ip: Addr | number | bigint | string, isV4?: boolean);
 
   num: polyNum;
   isV4: boolean;
-  op: numOperations;
 
   version(): 4 | 6;
   isIPv4(): boolean;

@@ -1,9 +1,6 @@
-import JSBI from 'jsbi';
-
-import { numOperations } from './polyBigInt';
 import Addr, { polyNum } from './single';
 
-type inputIp = Addr | number | JSBI | string;
+type inputIp = Addr | number | bigint | string;
 
 declare class Prefix {
   constructor(ip: inputIp, cidr: number, isV4?: boolean);
@@ -11,7 +8,6 @@ declare class Prefix {
 
   ip: Addr;
   cidr: number;
-  op: numOperations;
 
   isIPv4(): boolean;
   toString(): string;
@@ -32,7 +28,6 @@ declare class Range {
 
   start: Addr;
   end: Addr;
-  op: numOperations;
 
   isIPv4(): boolean;
   toString(): string;

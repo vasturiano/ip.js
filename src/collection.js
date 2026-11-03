@@ -19,8 +19,6 @@ class Prefix {
     if (this.cidr < 0 || this.cidr > (this.ip.isIPv4() ? 32 : 128)) {
       throw new Error(`Cidr /${this.cidr} outside bounds in prefix ${ipPrefix}`);
     }
-
-    this.op = this.ip.op;
   }
 
   isIPv4 = () => this.ip.isIPv4();
@@ -28,8 +26,8 @@ class Prefix {
   toString = () => `${this.ip.toString()}/${this.cidr}`;
 
   countIps() {
-    const op = this.op;
-    return op.exp(op.num(2), op.num((this.isIPv4() ? 32 : 128) - this.cidr));
+    const exponent = (this.isIPv4() ? 32 : 128) - this.cidr;
+    return this.isIPv4() ? 2 ** exponent : 1n << BigInt(exponent);
   }
 
   getCidr = () => this.cidr;
@@ -38,17 +36,17 @@ class Prefix {
   firstIp = () => this.ip;
 
   // Returns object of last IP in the prefix
-  lastIp = () => new Addr(this.op.sub(this.op.add(this.ip.toNum(), this.countIps()), this.op.num(1)), this.isIPv4());
+  lastIp = () => new Addr(this.ip.toNum() + this.countIps() - (this.isIPv4() ? 1 : 1n), this.isIPv4());
 
   toRange = () => new Range(this.firstIp(), this.lastIp(), this.isIPv4());
 
   // Return a valid prefix by setting the correct start IP that fits this prefix length
   correctBitBoundary() {
-    const op = this.op;
     const nBits = this.isIPv4() ? 32 : 128;
+    const isV4 = this.isIPv4();
 
-    const mask = op.sub(op.exp(op.num(2), op.num(nBits - this.cidr)), op.num(1));
-    const correctedNum = fixSign(op.bitAnd(this.ip.toNum(), op.bitNeg(mask)));
+    const mask = isV4 ? 2 ** (nBits - this.cidr) - 1 : (1n << BigInt(nBits - this.cidr)) - 1n;
+    const correctedNum = fixSign(this.ip.toNum() & ~mask);
 
     return new Prefix(new Addr(correctedNum), this.cidr, this.isIPv4());
 
@@ -56,8 +54,8 @@ class Prefix {
 
     function fixSign(n) {
       // fix sign inversions (for nums >= 2**31)
-      return op.lt(n, op.num(0))
-        ? op.add(n, op.exp(op.num(2), op.num(nBits)))
+      return n < 0
+        ? n + (isV4 ? 2 ** nBits : 1n << BigInt(nBits))
         : n
     }
   }
@@ -90,15 +88,13 @@ class Range {
     this.end = new Addr(lastIp, isV4);
 
     if (this.start.version() !== this.end.version()) throw new Error(`Range addresses have different families: ${this.start.toString()} - ${this.end.toString()}`);
-
-    this.op = this.start.op;
   }
 
   isIPv4 = () => this.start.isIPv4();
 
   toString = () => `${this.start.toString()} - ${this.end.toString()}`;
 
-  countIps = () => this.op.add(this.op.sub(this.end.toNum(), this.start.toNum()), this.op.num(1));
+  countIps = () => this.end.toNum() - this.start.toNum() + (this.isIPv4() ? 1 : 1n);
 
   // Returns first IP in the range
   firstIp = () => this.start;
@@ -107,7 +103,7 @@ class Range {
   lastIp = () => this.end;
 
   cidrCount() {
-    return (this.isIPv4() ? 32 : 128) - Math.log(this.op.toNum(this.countIps())) / Math.log(2);
+    return (this.isIPv4() ? 32 : 128) - Math.log(Number(this.countIps())) / Math.log(2);
   }
 
   toPrefixes() {
@@ -160,8 +156,6 @@ class Range {
   // False indicates if the value should be calculated for right before the IP address(false) or right after(true)
   // Returns null if IP and range are not of the same family
   ipRelPosition(ip, after) {
-    const op = this.op;
-
     if (!after) after = false;
 
     if (ip.isIPv4() !== this.isIPv4())
@@ -170,21 +164,25 @@ class Range {
     const ipnum = ip.toNum();
     const first = this.start.toNum();
     const last = this.end.toNum();
+    const offset = this.isIPv4() ? (after ? 1 : 0) : (after ? 1n : 0n);
 
-    return percentVal(op.add(ipnum, op.num((after ? 1 : 0))), first, last);
+    return percentVal(ipnum + offset, first, last);
 
     function percentVal(pos, start, end) {
-      return op.toNum(op.sub(pos, start)) / (op.toNum(op.sub(end, start)) + 1);
+      return Number(pos - start) / (Number(end - start) + 1);
     }
   }
 
   // Returns the ip that is at the percentual position of the range
   ipAtPerc(perc) {
-    const op = this.op;
-    return new Addr(numPercentValue(perc, this.start.toNum(), op.add(this.end.toNum(), op.num(1))), this.isIPv4());
+    const isV4 = this.isIPv4();
+    const start = this.start.toNum();
+    const end = this.end.toNum() + (isV4 ? 1 : 1n);
+    return new Addr(numPercentValue(perc, start, end), isV4);
 
     function numPercentValue(perc, start, end) {
-      return op.add(start, op.num(Math.round(op.toNum(op.sub(end, start)) * (perc / 100))));
+      const offset = Math.round(Number(end - start) * (perc / 100));
+      return start + (isV4 ? offset : BigInt(offset));
     }
   }
 

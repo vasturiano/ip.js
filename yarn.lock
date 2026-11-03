@@ -2967,10 +2967,6 @@ js-yaml@^3.13.1:
     argparse "^1.0.7"
     esprima "^4.0.0"
 
-jsbi@^4.3.0:
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-4.3.2.tgz#8a4d05d4e09907d73042135b6aa55a6d161ee955"
-  integrity sha512-9fqMSQbhJykSeii05nxKl4m6Eqn2P6rOlYiS+C5Dr/HPIU/7yZxu5qzbs40tgaFORiw2Amd0mirjxatXYMkIew==
 
 jsesc@^3.0.2, jsesc@~3.1.0:
   version "3.1.0"
