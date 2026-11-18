@@ -79,25 +79,31 @@ class Addr {
     //
 
     function compressV6(addrStr) {
-      const chunks = addrStr.split(/:/);
+      const chunks = addrStr.split(':').map(chunk => chunk.replace(/^0+/, '') || '0');
+      let bestStart = -1;
+      let bestLength = 1;
 
-      let out = '';
-      for (let i=0; i < chunks.length; i++) {
-        let chunk = chunks[i].replace(/^0+/,'');
-        if (!chunk) chunk = 0;
-        out += `${chunk}:`;
+      for (let i = 0; i < chunks.length;) {
+        if (chunks[i] !== '0') {
+          i++;
+          continue;
+        }
+
+        let end = i + 1;
+        while (end < chunks.length && chunks[end] === '0')
+          end++;
+
+        if (end - i > bestLength) {
+          bestStart = i;
+          bestLength = end - i;
+        }
+        i = end;
       }
 
-      out = out.replace(/(:0)+/,':');
-      out = out.replace(/^0/,'');
-      out = out.replace(/:0$/,':');
-      out = out.substr(0, out.length-1);
+      if (bestStart === -1)
+        return chunks.join(':');
 
-      if (!out.match(/::/))
-        if (out.match(/:$/))
-          out += ':';
-
-      return out;
+      return `${chunks.slice(0, bestStart).join(':')}::${chunks.slice(bestStart + bestLength).join(':')}`;
     }
   }
 

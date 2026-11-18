@@ -63,6 +63,24 @@ test('IPv6 string compression', () => {
   expect(new Addr('2002:DEAD:0:0:0:0::0:0:0:4C:4').toString()).toBe('2002:dead::4c:4');
 });
 
+test('IPv6 string compression follows the longest zero run', () => {
+  const cases = [
+    ['0:1:2:3:4:5:6:7', '0:1:2:3:4:5:6:7'],
+    ['0:ffff:c7a5:7c1:0:0:0:ffff', '0:ffff:c7a5:7c1::ffff'],
+    ['ffff:8ecf:0:1f03:0:8093:0:0', 'ffff:8ecf:0:1f03:0:8093::'],
+    ['1:0:1:0:ffff:1:ffff:ffff', '1:0:1:0:ffff:1:ffff:ffff'],
+    ['1:0:0:2:0:0:0:3', '1:0:0:2::3'],
+    ['1:0:0:2:0:0:3:4', '1::2:0:0:3:4']
+  ];
+
+  cases.forEach(([input, expected]) => {
+    const addr = new Addr(input);
+    const formatted = addr.toString();
+    expect(formatted).toBe(expected);
+    expect(new Addr(formatted).toNum()).toBe(addr.toNum());
+  });
+});
+
 test('toNum', () => {
   expect(new Addr('10.0.0.1').toNum()).toBe(167772161);
   expect(new Addr('2002:DEAD::1').toNum()).toBe(42550196860238503226743406894518370305n);

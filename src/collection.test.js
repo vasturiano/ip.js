@@ -34,7 +34,7 @@ describe('Prefix', () => {
 
   test('lastIp', () => {
     expect(new Prefix('10.0.0.0/24').lastIp().toString()).toBe('10.0.0.255');
-    expect(new Prefix('2002:DEAD::/48').lastIp().toString()).toBe('2002:dead::ffff:ffff:ffff:ffff:ffff');
+    expect(new Prefix('2002:DEAD::/48').lastIp().toString()).toBe('2002:dead:0:ffff:ffff:ffff:ffff:ffff');
   });
 
   test('getCidr', () => {
@@ -44,7 +44,7 @@ describe('Prefix', () => {
 
   test('toRange', () => {
     expect(new Prefix('10.0.0.0/24').toRange().toString()).toBe('10.0.0.0 - 10.0.0.255');
-    expect(new Prefix('2002:DEAD::/48').toRange().toString()).toBe('2002:dead:: - 2002:dead::ffff:ffff:ffff:ffff:ffff');
+    expect(new Prefix('2002:DEAD::/48').toRange().toString()).toBe('2002:dead:: - 2002:dead:0:ffff:ffff:ffff:ffff:ffff');
   });
 
   test('countIps', () => {
@@ -64,8 +64,9 @@ describe('Prefix', () => {
 
   test('slice', () => {
     expect(new Prefix('10.0.0.0/24').slice(26).map(p => p.toString())).toEqual(["10.0.0.0/26", "10.0.0.64/26", "10.0.0.128/26", "10.0.0.192/26"]);
-    expect(new Prefix('2002:DEAD::/48').slice(50).map(p => p.toString())).toEqual(["2002:dead::/50", "2002:dead::4000:0:0:0:0/50", "2002:dead::8000:0:0:0:0/50", "2002:dead::c000:0:0:0:0/50"]);
+    expect(new Prefix('2002:DEAD::/48').slice(50).map(p => p.toString())).toEqual(["2002:dead::/50", "2002:dead:0:4000::/50", "2002:dead:0:8000::/50", "2002:dead:0:c000::/50"]);
     expect(new Prefix('::/126').slice(127).map(p => p.toString())).toEqual(['::/127', '::2/127']);
+    expect(new Prefix('::/16').slice(17).map(p => p.toString())).toEqual(['::/17', '0:8000::/17']);
 
   });
 });
@@ -73,7 +74,7 @@ describe('Prefix', () => {
 describe('Range', () => {
   test('construct from ips', () => {
     expect(new Range('10.0.0.0', '10.0.255.255').toString()).toBe('10.0.0.0 - 10.0.255.255');
-    expect(new Range('2002:DEAD::', '2002:DEAD::ffff:ffff:ffff:ffff:ffff').toString()).toBe('2002:dead:: - 2002:dead::ffff:ffff:ffff:ffff:ffff');
+    expect(new Range('2002:DEAD::', '2002:DEAD::ffff:ffff:ffff:ffff:ffff').toString()).toBe('2002:dead:: - 2002:dead:0:ffff:ffff:ffff:ffff:ffff');
   });
 
   test('construct with set version', () => {
